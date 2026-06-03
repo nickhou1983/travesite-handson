@@ -394,13 +394,23 @@
       }
 
       function getFilteredData() {
+        const rawSearch = state.filters.search.trim().toLowerCase();
+        const keywords = rawSearch ? rawSearch.split(/\s+/).filter(Boolean) : [];
+
         return state.destinations
           .filter((item) => {
             const regionOk = state.filters.region === '全部' || item.region === state.filters.region;
             const budgetOk = state.filters.budget === '全部' || item.budget === state.filters.budget;
             const seasonOk = state.filters.season === '全部' || item.season === state.filters.season;
             const typeOk = state.filters.type === '全部' || item.type === state.filters.type;
-            return regionOk && budgetOk && seasonOk && typeOk;
+
+            let searchOk = true;
+            if (keywords.length > 0) {
+              const searchText = (item.name + item.country + item.summary + item.highlights.join('')).toLowerCase();
+              searchOk = keywords.every(kw => searchText.includes(kw));
+            }
+
+            return regionOk && budgetOk && seasonOk && typeOk && searchOk;
           })
           .sort((a, b) => {
             if (state.filters.sortBy === 'budgetAsc') {
