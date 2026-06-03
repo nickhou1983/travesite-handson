@@ -463,6 +463,21 @@
           render();
         });
 
+        els.searchInput.addEventListener('input', (e) => {
+          state.filters.search = e.target.value;
+          els.searchClear.classList.toggle('hidden', !e.target.value);
+          els.searchClear.classList.toggle('flex', !!e.target.value);
+          render();
+        });
+
+        els.searchClear.addEventListener('click', () => {
+          els.searchInput.value = '';
+          state.filters.search = '';
+          els.searchClear.classList.add('hidden');
+          els.searchClear.classList.remove('flex');
+          render();
+        });
+
         els.resetBtn.addEventListener('click', () => {
           state.filters = {
             region: '全部',
@@ -470,6 +485,7 @@
             season: '全部',
             type: '全部',
             sortBy: 'rating',
+            search: '',
           };
 
           els.regionFilter.value = '全部';
@@ -477,6 +493,9 @@
           els.seasonFilter.value = '全部';
           els.typeFilter.value = '全部';
           els.sortBy.value = 'rating';
+          els.searchInput.value = '';
+          els.searchClear.classList.add('hidden');
+          els.searchClear.classList.remove('flex');
 
           render();
         });
