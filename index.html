@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlueGreen Trails | 目的地浏览</title>
+    <meta
+      name="description"
+      content="一个响应式单页旅游目的地浏览网站，支持筛选、排序与详情浏览。"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&family=Outfit:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ocean: {
+                50: '#ecfeff',
+                100: '#cffafe',
+                500: '#0ea5e9',
+                600: '#0284c7',
+              },
+              leaf: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                500: '#22c55e',
+                600: '#16a34a',
+              },
+            },
+            boxShadow: {
+              float: '0 16px 40px -28px rgba(14, 165, 233, 0.52)',
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="stylesheet" href="styles/tailwind.css" />
+  </head>
+
+  <body class="min-h-screen antialiased">
+    <header class="sticky top-0 z-30 border-b border-slate-100/60 glass">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
+        <a href="#top" class="display-font text-xl font-extrabold tracking-tight text-ocean-600">
+          BlueGreen Trails
+        </a>
+
+        <button
+          id="menuBtn"
+          class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 md:hidden"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          菜单
+        </button>
+
+        <nav class="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex">
+          <a href="#destinations" class="hover:text-ocean-600">热门目的地</a>
+          <a href="#filters" class="hover:text-ocean-600">筛选排序</a>
+          <a href="#detail" class="hover:text-ocean-600">详情预览</a>
+          <a href="#footer" class="hover:text-ocean-600">图片来源</a>
+        </nav>
+      </div>
+
+      <nav id="mobileMenu" class="hidden border-t border-slate-100 px-4 py-3 md:hidden">
+        <ul class="space-y-2 text-sm font-medium text-slate-700">
+          <li><a href="#destinations" class="block rounded px-2 py-2 hover:bg-slate-50">热门目的地</a></li>
+          <li><a href="#filters" class="block rounded px-2 py-2 hover:bg-slate-50">筛选排序</a></li>
+          <li><a href="#detail" class="block rounded px-2 py-2 hover:bg-slate-50">详情预览</a></li>
+          <li><a href="#footer" class="block rounded px-2 py-2 hover:bg-slate-50">图片来源</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="top" class="mx-auto max-w-6xl px-4 pb-16 pt-8 md:px-6 md:pt-10">
+      <section class="hero-grid relative overflow-hidden rounded-3xl border border-white/70 bg-white/70 px-6 py-10 shadow-float reveal md:px-10 md:py-16">
+        <div class="absolute -right-16 -top-14 h-44 w-44 rounded-full bg-ocean-100/70 blur-2xl"></div>
+        <div class="absolute -bottom-14 -left-12 h-40 w-40 rounded-full bg-leaf-100/80 blur-2xl"></div>
+
+        <div class="relative z-10 grid items-center gap-8 lg:grid-cols-[1.2fr_1fr]">
+          <div>
+            <p class="mb-3 inline-flex items-center rounded-full border border-ocean-200 bg-ocean-50 px-3 py-1 text-xs font-semibold text-ocean-700">
+              响应式单页探索体验
+            </p>
+            <h1 class="display-font text-3xl font-extrabold leading-tight text-slate-900 md:text-5xl">
+              在同一页中完成
+              <span class="text-ocean-600">发现</span>
+              与
+              <span class="text-leaf-600">比较</span>
+            </h1>
+            <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 md:text-base">
+              从海岛到山地，从人文到城市，快速筛选符合预算与季节的目的地。
+              设计以蓝绿为主色，保留简洁信息层级，帮助你更轻松地做出旅行选择。
+            </p>
+            <div class="mt-7 flex flex-wrap items-center gap-3">
+              <a
+                href="#destinations"
+                class="rounded-xl bg-ocean-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-ocean-500"
+              >开始探索</a>
+              <a
+                href="#filters"
+                class="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-ocean-200 hover:text-ocean-600"
+              >先看筛选</a>
+            </div>
+          </div>
+
+          <div class="overflow-hidden rounded-2xl border border-white/90 shadow-float">
+            <img
+              src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=80"
+              alt="海岸线与山地相连的目的地风景"
+              class="h-64 w-full object-cover md:h-80"
+              loading="eager"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="filters" class="mt-10 rounded-2xl border border-slate-100 bg-white/85 p-5 shadow-sm md:p-6 reveal">
+        <div class="flex flex-wrap items-end gap-4">
+          <div class="min-w-[150px] flex-1">
+            <label class="mb-1 block text-xs font-semibold text-slate-500" for="regionFilter">地区</label>
+            <select id="regionFilter" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-ocean-300 focus:outline-none">
+              <option value="全部">全部地区</option>
+            </select>
+          </div>
+
+          <div class="min-w-[130px] flex-1">
+            <label class="mb-1 block text-xs font-semibold text-slate-500" for="budgetFilter">预算</label>
+            <select id="budgetFilter" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-ocean-300 focus:outline-none">
+              <option value="全部">全部预算</option>
+              <option value="低">低</option>
+              <option value="中">中</option>
+              <option value="高">高</option>
+            </select>
+          </div>
+
+          <div class="min-w-[130px] flex-1">
+            <label class="mb-1 block text-xs font-semibold text-slate-500" for="seasonFilter">季节</label>
+            <select id="seasonFilter" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-ocean-300 focus:outline-none">
+              <option value="全部">全部季节</option>
+              <option value="春">春</option>
+              <option value="夏">夏</option>
+              <option value="秋">秋</option>
+              <option value="冬">冬</option>
+            </select>
+          </div>
+
+          <div class="min-w-[140px] flex-1">
+            <label class="mb-1 block text-xs font-semibold text-slate-500" for="typeFilter">旅行类型</label>
+            <select id="typeFilter" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-ocean-300 focus:outline-none">
+              <option value="全部">全部类型</option>
+              <option value="海岛">海岛</option>
+              <option value="城市">城市</option>
+              <option value="人文">人文</option>
+              <option value="自然">自然</option>
+              <option value="徒步">徒步</option>
+            </select>
+          </div>
+
+          <div class="min-w-[160px] flex-1">
+            <label class="mb-1 block text-xs font-semibold text-slate-500" for="sortBy">排序</label>
+            <select id="sortBy" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-ocean-300 focus:outline-none">
+              <option value="rating">热门优先</option>
+              <option value="budgetAsc">预算从低到高</option>
+              <option value="budgetDesc">预算从高到低</option>
+            </select>
+          </div>
+
+          <button id="resetBtn" class="rounded-lg bg-leaf-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-leaf-600">
+            重置筛选
+          </button>
+        </div>
+      </section>
+
+      <section id="destinations" class="mt-8">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 class="display-font text-2xl font-bold text-slate-900 md:text-3xl">热门目的地</h2>
+          <p id="resultCount" class="text-sm text-slate-500"></p>
+        </div>
+
+        <div id="emptyState" class="hidden rounded-2xl border border-dashed border-slate-300 bg-white/70 p-8 text-center text-slate-500">
+          没有符合条件的目的地，试试放宽筛选条件。
+        </div>
+
+        <div id="cards" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
+      </section>
+
+      <section id="detail" class="mt-10 rounded-2xl border border-slate-100 bg-white/85 p-6 shadow-sm reveal">
+        <h3 class="display-font text-2xl font-bold text-slate-900">目的地详情</h3>
+        <p class="mt-1 text-sm text-slate-500">点击任意卡片即可在此查看详细信息。</p>
+
+        <div id="detailContent" class="mt-5 grid gap-5 lg:grid-cols-[1.1fr_1fr]">
+          <div class="overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+            <img id="detailImage" src="" alt="目的地详情图片" class="h-64 w-full object-cover md:h-72" loading="lazy" />
+          </div>
+
+          <div>
+            <h4 id="detailTitle" class="text-2xl font-bold text-slate-900"></h4>
+            <p id="detailSummary" class="mt-3 text-sm leading-7 text-slate-600"></p>
+
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span id="detailBudget" class="tag"></span>
+              <span id="detailSeason" class="tag"></span>
+              <span id="detailType" class="tag"></span>
+            </div>
+
+            <ul id="detailHighlights" class="mt-4 space-y-2 text-sm text-slate-700"></ul>
+
+            <div class="mt-4 rounded-lg bg-slate-50 p-4 text-sm text-slate-700">
+              <p><strong>推荐时长：</strong><span id="detailDays"></span></p>
+              <p class="mt-1"><strong>交通建议：</strong><span id="detailTransport"></span></p>
+              <p class="mt-1"><strong>出行提示：</strong><span id="detailTips"></span></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="footer" class="border-t border-slate-200 bg-white/70 px-4 py-8 md:px-6">
+      <div class="mx-auto max-w-6xl space-y-3 text-sm text-slate-600">
+        <p class="font-semibold text-slate-700">图片来源声明</p>
+        <p>页面中图片优先来自 Unsplash 与 Pexels，具体来源见对应卡片详情。</p>
+        <p>© 2026 BlueGreen Trails. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      const state = {
+        destinations: [],
+        filters: {
+          region: '全部',
+          budget: '全部',
+          season: '全部',
+          type: '全部',
+          sortBy: 'rating',
+        },
+      };
+
+      const budgetRank = { 低: 1, 中: 2, 高: 3 };
+
+      const els = {
+        cards: document.getElementById('cards'),
+        resultCount: document.getElementById('resultCount'),
+        emptyState: document.getElementById('emptyState'),
+        regionFilter: document.getElementById('regionFilter'),
+        budgetFilter: document.getElementById('budgetFilter'),
+        seasonFilter: document.getElementById('seasonFilter'),
+        typeFilter: document.getElementById('typeFilter'),
+        sortBy: document.getElementById('sortBy'),
+        resetBtn: document.getElementById('resetBtn'),
+        detailImage: document.getElementById('detailImage'),
+        detailTitle: document.getElementById('detailTitle'),
+        detailSummary: document.getElementById('detailSummary'),
+        detailBudget: document.getElementById('detailBudget'),
+        detailSeason: document.getElementById('detailSeason'),
+        detailType: document.getElementById('detailType'),
+        detailHighlights: document.getElementById('detailHighlights'),
+        detailDays: document.getElementById('detailDays'),
+        detailTransport: document.getElementById('detailTransport'),
+        detailTips: document.getElementById('detailTips'),
+        menuBtn: document.getElementById('menuBtn'),
+        mobileMenu: document.getElementById('mobileMenu'),
+      };
+
+      function makeCard(item) {
+        const card = document.createElement('article');
+        card.className =
+          'destination-card overflow-hidden rounded-2xl border border-slate-200 bg-white/90 shadow-sm';
+
+        card.innerHTML = `
+          <button class="w-full text-left" data-id="${item.id}">
+            <img
+              src="${item.image}"
+              alt="${item.name} 风景图"
+              class="h-48 w-full object-cover"
+              loading="lazy"
+            />
+            <div class="p-4">
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="display-font text-xl font-bold text-slate-900">${item.name}</h3>
+                <span class="text-xs font-semibold text-ocean-600">★ ${item.rating.toFixed(1)}</span>
+              </div>
+              <p class="mt-1 text-sm text-slate-500">${item.country} · ${item.region}</p>
+              <p class="mt-3 text-sm leading-6 text-slate-600">${item.summary}</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="tag">预算 ${item.budget}</span>
+                <span class="tag">${item.season}季推荐</span>
+                <span class="tag">${item.type}</span>
+              </div>
+              <p class="mt-3 text-xs text-slate-400">图片来源：${item.source}</p>
+            </div>
+          </button>
+        `;
+
+        card.querySelector('button').addEventListener('click', () => {
+          showDetail(item);
+          document.getElementById('detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        return card;
+      }
+
+      function showDetail(item) {
+        els.detailImage.src = item.image;
+        els.detailImage.alt = `${item.name} 详情图`;
+        els.detailTitle.textContent = `${item.name} · ${item.country}`;
+        els.detailSummary.textContent = item.summary;
+        els.detailBudget.textContent = `预算 ${item.budget}`;
+        els.detailSeason.textContent = `${item.season}季推荐`;
+        els.detailType.textContent = item.type;
+        els.detailDays.textContent = item.days;
+        els.detailTransport.textContent = item.transport;
+        els.detailTips.textContent = item.tips;
+
+        els.detailHighlights.innerHTML = item.highlights
+          .map((h) => `<li class="rounded-lg bg-white p-2">• ${h}</li>`)
+          .join('');
+      }
+
+      function getFilteredData() {
+        return state.destinations
+          .filter((item) => {
+            const regionOk = state.filters.region === '全部' || item.region === state.filters.region;
+            const budgetOk = state.filters.budget === '全部' || item.budget === state.filters.budget;
+            const seasonOk = state.filters.season === '全部' || item.season === state.filters.season;
+            const typeOk = state.filters.type === '全部' || item.type === state.filters.type;
+            return regionOk && budgetOk && seasonOk && typeOk;
+          })
+          .sort((a, b) => {
+            if (state.filters.sortBy === 'budgetAsc') {
+              return budgetRank[a.budget] - budgetRank[b.budget];
+            }
+            if (state.filters.sortBy === 'budgetDesc') {
+              return budgetRank[b.budget] - budgetRank[a.budget];
+            }
+            return b.rating - a.rating;
+          });
+      }
+
+      function render() {
+        const data = getFilteredData();
+        els.cards.innerHTML = '';
+
+        if (data.length === 0) {
+          els.emptyState.classList.remove('hidden');
+        } else {
+          els.emptyState.classList.add('hidden');
+          data.forEach((item) => els.cards.appendChild(makeCard(item)));
+        }
+
+        els.resultCount.textContent = `共 ${data.length} 个目的地`;
+      }
+
+      function bindFilterEvents() {
+        els.regionFilter.addEventListener('change', (e) => {
+          state.filters.region = e.target.value;
+          render();
+        });
+
+        els.budgetFilter.addEventListener('change', (e) => {
+          state.filters.budget = e.target.value;
+          render();
+        });
+
+        els.seasonFilter.addEventListener('change', (e) => {
+          state.filters.season = e.target.value;
+          render();
+        });
+
+        els.typeFilter.addEventListener('change', (e) => {
+          state.filters.type = e.target.value;
+          render();
+        });
+
+        els.sortBy.addEventListener('change', (e) => {
+          state.filters.sortBy = e.target.value;
+          render();
+        });
+
+        els.resetBtn.addEventListener('click', () => {
+          state.filters = {
+            region: '全部',
+            budget: '全部',
+            season: '全部',
+            type: '全部',
+            sortBy: 'rating',
+          };
+
+          els.regionFilter.value = '全部';
+          els.budgetFilter.value = '全部';
+          els.seasonFilter.value = '全部';
+          els.typeFilter.value = '全部';
+          els.sortBy.value = 'rating';
+
+          render();
+        });
+      }
+
+      function bindMenuEvents() {
+        els.menuBtn.addEventListener('click', () => {
+          const isOpen = els.mobileMenu.classList.toggle('hidden');
+          els.menuBtn.setAttribute('aria-expanded', String(!isOpen));
+        });
+
+        els.mobileMenu.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', () => {
+            els.mobileMenu.classList.add('hidden');
+            els.menuBtn.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      function fillRegionOptions(data) {
+        const regions = [...new Set(data.map((item) => item.region))];
+        regions.forEach((region) => {
+          const option = document.createElement('option');
+          option.value = region;
+          option.textContent = region;
+          els.regionFilter.appendChild(option);
+        });
+      }
+
+      async function bootstrap() {
+        try {
+          const response = await fetch('data/destinations.json');
+          const data = await response.json();
+          state.destinations = data;
+
+          fillRegionOptions(data);
+          bindFilterEvents();
+          bindMenuEvents();
+          render();
+          showDetail(data[0]);
+        } catch (error) {
+          els.cards.innerHTML =
+            '<p class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">数据加载失败，请检查 data/destinations.json。</p>';
+        }
+      }
+
+      bootstrap();
+    </script>
+  </body>
+</html>

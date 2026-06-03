@@ -1,0 +1,73 @@
+/* Custom layer on top of Tailwind CDN utilities */
+:root {
+  --sea-50: #ecfeff;
+  --sea-100: #ccfbf1;
+  --sea-500: #0ea5e9;
+  --sea-600: #0284c7;
+  --leaf-500: #22c55e;
+  --leaf-600: #16a34a;
+  --ink-900: #0f172a;
+  --mist-100: #e2e8f0;
+}
+
+body {
+  font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  color: var(--ink-900);
+  background:
+    radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.14), transparent 36%),
+    radial-gradient(circle at 85% 12%, rgba(34, 197, 94, 0.16), transparent 34%),
+    linear-gradient(180deg, #f8feff 0%, #f5fff8 45%, #f8fafc 100%);
+}
+
+.display-font {
+  font-family: "Outfit", "Noto Sans SC", sans-serif;
+}
+
+.glass {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.destination-card {
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.destination-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 32px -22px rgba(2, 132, 199, 0.56);
+  border-color: rgba(14, 165, 233, 0.45);
+}
+
+.tag {
+  border-radius: 999px;
+  padding: 0.22rem 0.65rem;
+  font-size: 0.74rem;
+  line-height: 1rem;
+  font-weight: 600;
+  background-color: rgba(34, 197, 94, 0.13);
+  color: var(--leaf-600);
+}
+
+.reveal {
+  animation: riseIn 0.56s ease both;
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
