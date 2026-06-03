@@ -124,6 +124,28 @@
 
       <section id="filters" class="mt-10 rounded-2xl border border-slate-100 bg-white/85 p-5 shadow-sm md:p-6 reveal">
         <div class="flex flex-wrap items-end gap-4">
+          <div class="min-w-[200px] flex-[2]">
+            <label class="mb-1 block text-xs font-semibold text-slate-500" for="searchInput">搜索</label>
+            <div class="relative">
+              <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+              </svg>
+              <input
+                type="search"
+                id="searchInput"
+                placeholder="搜索城市、国家或关键词…"
+                class="w-full rounded-lg border border-slate-200 py-2 pl-9 pr-8 text-sm focus:border-ocean-300 focus:outline-none"
+                aria-label="搜索目的地"
+              />
+              <button
+                id="searchClear"
+                type="button"
+                class="absolute right-2 top-1/2 hidden h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full text-slate-400 hover:text-slate-600"
+                aria-label="清除搜索"
+              >&times;</button>
+            </div>
+          </div>
+
           <div class="min-w-[150px] flex-1">
             <label class="mb-1 block text-xs font-semibold text-slate-500" for="regionFilter">地区</label>
             <select id="regionFilter" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-ocean-300 focus:outline-none">
